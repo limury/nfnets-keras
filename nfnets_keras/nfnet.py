@@ -197,7 +197,7 @@ class NFBlock(tf.keras.Model):
         out = (self.se(out) * 2) * out
         res_avg_var = tf.math.reduce_mean(tf.math.reduce_variance(out, axis = [0, 1, 2]))
         if self._has_stochdepth:
-            out = self.stoch_depth(out, training)
+            out = self.stoch_depth(tf.convert_to_tensor(out), training)
         out = out * self.add_weight(name = 'skip_gain', shape = (), initializer = "zeros", trainable = True, dtype = out.dtype)
         return out * self.alpha + shortcut, res_avg_var
 
